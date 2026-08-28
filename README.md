@@ -366,6 +366,22 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 
 ---
 
+## ☕ 支持作者
+
+这个工作流完全免费开源，没有任何付费功能。如果它帮你节省了时间，或者你觉得好用，欢迎请作者喝杯咖啡 ☕
+
+你的咖啡赞助 = 更多熬夜更新的动力 🤔
+
+<p align="center">
+  <img src="assets/wechat_reward_qrcode.png" alt="微信赞赏码" width="280">
+</p>
+
+<p align="center">
+  <i>微信扫码赞赏，金额随意，感谢支持！</i>
+</p>
+
+---
+
 ## 📄 License
 
 MIT License — 详见 [LICENSE](LICENSE) 文件。
