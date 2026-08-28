@@ -1,10 +1,16 @@
-# ComfyUI MiniMax-H3 R2V Long Video Workflow
+# 🎬 ComfyUI MiniMax-H3 R2V Long Video Workflow
+
+![License](https://img.shields.io/badge/License-MIT-green)
+![Platform](https://img.shields.io/badge/Platform-ComfyUI-blue)
+![Model](https://img.shields.io/badge/Model-MiniMax--H3-orange)
+![Version](https://img.shields.io/badge/Version-v0.9-purple)
+![GPU](https://img.shields.io/badge/GPU-RTX%205060%208GB-red)
 
 基于 ComfyUI 的 MiniMax-H3 参考生视频（Reference-to-Video）长视频工作流。通过多段分镜头拼接突破单段时长限制，集成 Larry Turbo 加速，在 RTX 5060 8GB 入门级显卡上可稳定生成 15 秒+ 带音频的长视频。
 
 ---
 
-## 速度对比
+## ⚡ 速度对比
 
 以下数据为相同测试条件下的参考值，实际速度因机器配置、分辨率、分镜头数量、提示词复杂度而异。
 
@@ -15,7 +21,15 @@
 
 **提速约 2.5-3 倍。**
 
-### 测试环境
+```mermaid
+xychart-beta
+    title "15秒视频生成耗时对比（RTX 5060 8GB，0.3MP，5段分镜头）"
+    x-axis ["社区导演台\n(25步)", "本工作流 v0.9\n(6步Larry加速)"]
+    y-axis "耗时（分钟）" 0 --> 70
+    bar [55, 20]
+```
+
+### 🖥️ 测试环境
 
 | 项目 | 配置 |
 |------|------|
@@ -30,29 +44,31 @@
 | Python | 3.12.10 |
 | 测试参数 | 0.3MP 分辨率，5 段分镜头，每段 3 秒，共 15 秒 |
 
-> 8GB 显存是入门级配置，本工作流在该显存下可稳定运行 0.3MP 分辨率；更高配置的机器（如 RTX 4090/5090、24GB+ 显存）速度更快，可跑更高分辨率。
+> 💡 8GB 显存是入门级配置，本工作流在该显存下可稳定运行 0.3MP 分辨率；更高配置的机器（如 RTX 4090/5090、24GB+ 显存）速度更快，可跑更高分辨率。
 
 ---
 
-## 功能特点
+## ✨ 功能特点
 
-- **多段分镜头**：5 段独立分镜头，每段可单独设置提示词和时长（1-10秒）
-- **通用提示词**：人物/场景/音频约束统一编写，自动拼接到每段分镜头提示词前
-- **Larry Turbo 加速**：v4-600 LoRA + 6 步 euler 采样，相比官方 25 步配置提速约 2.5-3 倍
-- **自动拼接**：画面（ImageBatch）和音频（AudioConcatenate）自动拼接成完整长视频
-- **参考图锁定**：所有分镜头共享同一参考图，保持人物身份和服饰一致性
-- **全局分辨率控制**：统一调整所有分镜头的输出分辨率
-- **灵活时长**：每段分镜头可独立调整时长，帧数自动适配 MiniMax-H3 的 17k+5 网格
+- **🎞️ 多段分镜头**：5 段独立分镜头，每段可单独设置提示词和时长（1-10秒）
+- **📝 通用提示词**：人物/场景/音频约束统一编写，自动拼接到每段分镜头提示词前
+- **🚀 Larry Turbo 加速**：v4-600 LoRA + 6 步 euler 采样，相比官方 25 步配置提速约 2.5-3 倍
+- **🔗 自动拼接**：画面（ImageBatch）和音频（AudioConcatenate）自动拼接成完整长视频
+- **👤 参考图锁定**：所有分镜头共享同一参考图，保持人物身份和服饰一致性
+- **📐 全局分辨率控制**：统一调整所有分镜头的输出分辨率
+- **⏱️ 灵活时长**：每段分镜头可独立调整时长，帧数自动适配 MiniMax-H3 的 17k+5 网格
 
 ---
 
-## 版本更新日志
+## 📋 版本更新日志
 
 ### v0.9（当前稳定版）
 
 **发布状态**：已验证可正常运行
 
-**能力提升**：
+<details>
+<summary><b>能力提升（点击展开）</b></summary>
+
 - 从单段视频升级为 5 段分镜头拼接，支持最长约 50 秒（每段10秒）
 - 引入通用提示词节点，人物/场景/音频约束统一管理
 - 集成 Larry Turbo LoRA v4-600 加速，6 步采样
@@ -60,12 +76,18 @@
 - 全局分辨率选择器，统一控制画质
 - 画面和音频自动拼接，无需手动处理
 
-**已知缺陷**：
-- 音频风格不连贯：每段分镜头独立生成音频，拼接后可能出现风格跳变，无法做到跨段音频一致性
-- 人物细节轻微衰减：多段生成后，后续分镜头的人物面部细节可能比第一段略糊
-- 镜头硬切：分镜头之间为直接拼接，无过渡帧，切换可能生硬
-- 分镜头数量固定：当前为 5 段，增减需要手动复制/删除一组节点（提示词+时长+生成子图+拼接连接）
-- 无动态分镜头管理：不支持点击增删分镜头（v1.0 导演台版本将支持）
+</details>
+
+<details>
+<summary><b>已知缺陷（点击展开）</b></summary>
+
+- **音频风格不连贯**：每段分镜头独立生成音频，拼接后可能出现风格跳变，无法做到跨段音频一致性
+- **人物细节轻微衰减**：多段生成后，后续分镜头的人物面部细节可能比第一段略糊
+- **镜头硬切**：分镜头之间为直接拼接，无过渡帧，切换可能生硬
+- **分镜头数量固定**：当前为 5 段，增减需要手动复制/删除一组节点（提示词+时长+生成子图+拼接连接）
+- **无动态分镜头管理**：不支持点击增删分镜头（v1.0 导演台版本将支持）
+
+</details>
 
 **适用场景**：
 - 人物参考图驱动的多镜头短视频
@@ -74,7 +96,7 @@
 
 ---
 
-## 依赖安装
+## 🔧 依赖安装
 
 ### 1. ComfyUI 版本要求
 
@@ -90,16 +112,32 @@
 | ComfyUI-Custom-Scripts | StringFunction 字符串拼接节点（pythongosssss） | `https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git` |
 | ComfyUI-VideoHelperSuite | 视频拼接节点（VHS：ImageBatch、AudioConcatenate） | `https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git` |
 
-**安装方法**：
-- 方法一：打开 ComfyUI Manager → Install Custom Nodes → 搜索插件名安装
-- 方法二：手动 clone 到 `ComfyUI/custom_nodes/` 目录，重启 ComfyUI
+<details>
+<summary><b>安装方法（点击展开）</b></summary>
 
-安装后重启 ComfyUI，确认节点列表中出现以下节点：
+**方法一：ComfyUI Manager（推荐）**
+1. 打开 ComfyUI Manager
+2. 选择 Install Custom Nodes
+3. 搜索插件名，点击安装
+4. 重启 ComfyUI
+
+**方法二：手动安装**
+```bash
+cd ComfyUI/custom_nodes
+git clone https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo.git
+git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
+git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+```
+重启 ComfyUI。
+
+**安装后验证**：节点列表中应出现以下节点：
 - `MiniMaxH3TurboLoRA`
 - `MiniMaxH3TurboSampler`
 - `StringFunction|pysssss`
 - `ImageBatch`（VHS）
 - `AudioConcatenate`（VHS）
+
+</details>
 
 ### 3. 模型文件（共 5 个）
 
@@ -117,11 +155,11 @@
 - 官方模型（UNET/CLIP/Video VAE/Audio VAE）：[Comfy-Org/MiniMax-H3 (Hugging Face)](https://huggingface.co/Comfy-Org/MiniMax-H3)
 - Larry Turbo LoRA：[MiniMax-H3-Turbo-Lora (Hugging Face)](https://huggingface.co/larryvrh/MiniMax-H3-Turbo-Lora)
 
-> 注意：r2v 模式必须使用 `ref2va` 版本的 UNET，不能用 `fl2va` 版本。Turbo LoRA 推荐 v4-600 版本，支持 4-8 步采样。
+> ⚠️ **注意**：r2v 模式必须使用 `ref2va` 版本的 UNET，不能用 `fl2va` 版本。Turbo LoRA 推荐 v4-600 版本，支持 4-8 步采样。
 
 ---
 
-## 快速开始（傻瓜式步骤）
+## 🚀 快速开始（傻瓜式步骤）
 
 ### 第一步：确认环境
 
@@ -165,18 +203,44 @@
 
 ---
 
-## 工作流结构
+## 🏗️ 工作流结构
 
-```
-参考图(LoadImage) → 预缩小(0.6MP) ──────────────────────┐
-                                                         │
-通用提示词 ──┬── 字符串拼接 ──→ 分镜头1(提示词+时长) ──→ 生成视频段1 ─┐
-             ├── 字符串拼接 ──→ 分镜头2(提示词+时长) ──→ 生成视频段2 ─┤
-             ├── 字符串拼接 ──→ 分镜头3(提示词+时长) ──→ 生成视频段3 ─┼→ ImageBatch拼接画面
-             ├── 字符串拼接 ──→ 分镜头4(提示词+时长) ──→ 生成视频段4 ─┤  +
-             └── 字符串拼接 ──→ 分镜头5(提示词+时长) ──→ 生成视频段5 ─┘  AudioConcatenate拼接音频
-                                                                          ↓
-UNET → Larry Turbo LoRA → 共享给所有分镜头采样                    CreateVideo → SaveVideo
+```mermaid
+graph LR
+    A[📷 参考图<br/>LoadImage] --> B[📐 预缩小<br/>0.6MP]
+    C[📝 通用提示词] --> D1[🔗 字符串拼接]
+    C --> D2[🔗 字符串拼接]
+    C --> D3[🔗 字符串拼接]
+    C --> D4[🔗 字符串拼接]
+    C --> D5[🔗 字符串拼接]
+    D1 --> E1[🎬 分镜头1<br/>提示词+时长]
+    D2 --> E2[🎬 分镜头2<br/>提示词+时长]
+    D3 --> E3[🎬 分镜头3<br/>提示词+时长]
+    D4 --> E4[🎬 分镜头4<br/>提示词+时长]
+    D5 --> E5[🎬 分镜头5<br/>提示词+时长]
+    B --> E1
+    B --> E2
+    B --> E3
+    B --> E4
+    B --> E5
+    F[⚡ Larry Turbo LoRA] --> E1
+    F --> E2
+    F --> E3
+    F --> E4
+    F --> E5
+    E1 --> G[🖼️ ImageBatch<br/>拼接画面]
+    E2 --> G
+    E3 --> G
+    E4 --> G
+    E5 --> G
+    E1 --> H[🔊 AudioConcatenate<br/>拼接音频]
+    E2 --> H
+    E3 --> H
+    E4 --> H
+    E5 --> H
+    G --> I[🎥 CreateVideo]
+    H --> I
+    I --> J[💾 SaveVideo<br/>输出MP4]
 ```
 
 每个分镜头的生成子图包含：
@@ -188,7 +252,7 @@ UNET → Larry Turbo LoRA → 共享给所有分镜头采样                    
 
 ---
 
-## 关键参数说明
+## ⚙️ 关键参数说明
 
 | 参数 | 默认值 | 合理范围 | 说明 |
 |------|--------|----------|------|
@@ -203,7 +267,7 @@ UNET → Larry Turbo LoRA → 共享给所有分镜头采样                    
 
 ---
 
-## 帧数规则
+## 📏 帧数规则
 
 MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算，无需手动调整：
 
@@ -218,58 +282,81 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 
 ---
 
-## 常见问题 FAQ
+## ❓ 常见问题 FAQ
 
-**Q: 爆显存（CUDA OOM）怎么办？**
-A: 按以下顺序尝试：
+<details>
+<summary><b>Q: 爆显存（CUDA OOM）怎么办？</b></summary>
+
+按以下顺序尝试：
 1. 降低全局分辨率到 0.2MP
 2. 减少每段时长（如从5秒降到3秒）
 3. 开启 Turbo LoRA 节点的 `low_vram` 模式（merge模式，画质略软但显存占用更低）
 4. 关闭其他占用显存的程序
 
-**Q: 人物不一致/变脸怎么办？**
-A:
+</details>
+
+<details>
+<summary><b>Q: 人物不一致/变脸怎么办？</b></summary>
+
 1. 确保通用提示词中明确声明人物参考（如"所有画面人物严格参考参考图的外貌、服饰、体型"）
 2. 参考图选择清晰的正面照，避免遮挡
 3. 分镜头提示词避免描述与参考图矛盾的外貌特征
 4. 降低采样步数到4步（减少重绘幅度）
 
-**Q: 音频有人声旁白/说话声怎么办？**
-A: 在通用提示词中明确声明："纯环境音效，无人声旁白，无对话，无唱歌，无语音"。工作流默认已包含此约束，如被修改请补回。
+</details>
 
-**Q: 如何增加/减少分镜头数量？**
-A: 当前版本需要手动操作：
+<details>
+<summary><b>Q: 音频有人声旁白/说话声怎么办？</b></summary>
+
+在通用提示词中明确声明："纯环境音效，无人声旁白，无对话，无唱歌，无语音"。工作流默认已包含此约束，如被修改请补回。
+
+</details>
+
+<details>
+<summary><b>Q: 如何增加/减少分镜头数量？</b></summary>
+
+当前版本需要手动操作：
 1. 复制一整组分镜头节点（提示词+时长+生成子图）
 2. 将新分镜头的画面输出连接到 ImageBatch
 3. 将新分镜头的音频输出连接到 AudioConcatenate
 4. 调整通用提示词的字符串拼接节点数量
 5. v1.0 导演台版本将支持点击动态增删分镜头
 
-**Q: 输出视频在哪里？**
-A: 保存在 `ComfyUI/output/` 目录，文件名格式为 `ComfyUI_xxxxx_.mp4`。
+</details>
 
-**Q: 可以用这个工作流做纯风景/动物视频吗？**
-A: 可以，参考图换成风景或动物即可，提示词相应调整。但 r2v 模式主要优化人物参考，非人物场景效果可能不如 t2v/i2v。
+<details>
+<summary><b>Q: 输出视频在哪里？</b></summary>
+
+保存在 `ComfyUI/output/` 目录，文件名格式为 `ComfyUI_xxxxx_.mp4`。
+
+</details>
+
+<details>
+<summary><b>Q: 可以用这个工作流做纯风景/动物视频吗？</b></summary>
+
+可以，参考图换成风景或动物即可，提示词相应调整。但 r2v 模式主要优化人物参考，非人物场景效果可能不如 t2v/i2v。
+
+</details>
 
 ---
 
-## 已知限制
+## ⚠️ 已知限制
 
-1. **音频连贯性**：多段音频独立生成，无法跨段保持风格一致。建议后期用音频编辑软件替换背景音乐。
-2. **长视频质量衰减**：超过5段后，后续分镜头质量可能明显下降。建议控制在5段以内。
-3. **无过渡效果**：分镜头间为硬切，如需淡入淡出等过渡需后期处理。
-4. **显存限制**：8GB显存最多稳定运行0.3MP、每段5秒以内。更高分辨率或更长单段需要更大显存。
-5. **提示词语言**：推荐中文提示词，CLIP编码器（Qwen3-VL）对中文支持良好。
+1. **🎵 音频连贯性**：多段音频独立生成，无法跨段保持风格一致。建议后期用音频编辑软件替换背景音乐。
+2. **📉 长视频质量衰减**：超过5段后，后续分镜头质量可能明显下降。建议控制在5段以内。
+3. **✂️ 无过渡效果**：分镜头间为硬切，如需淡入淡出等过渡需后期处理。
+4. **💾 显存限制**：8GB显存最多稳定运行0.3MP、每段5秒以内。更高分辨率或更长单段需要更大显存。
+5. **🌐 提示词语言**：推荐中文提示词，CLIP编码器（Qwen3-VL）对中文支持良好。
 
 ---
 
-## 后续版本规划
+## 🗺️ 后续版本规划
 
 - **v1.0**（开发中）：基于社区导演台插件（AIMixer/ComfyUI_MiniMaxH3_Director），支持点击动态增删分镜头、公共参数区统一管理参考图和通用提示词、自动拼接。仍集成 Larry Turbo 加速。
 
 ---
 
-## 致谢
+## 🙏 致谢
 
 - [Larryvrh/ComfyUI-MiniMax-H3-Turbo](https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo) — Turbo 加速节点和 LoRA 权重
 - [AIMixer/ComfyUI_MiniMaxH3_Director](https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director) — 导演台插件，v1.0 版本参考
@@ -279,6 +366,6 @@ A: 可以，参考图换成风景或动物即可，提示词相应调整。但 r
 
 ---
 
-## License
+## 📄 License
 
 MIT License — 详见 [LICENSE](LICENSE) 文件。
