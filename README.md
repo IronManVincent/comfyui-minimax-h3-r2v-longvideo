@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-ComfyUI-blue)
 ![Model](https://img.shields.io/badge/Model-MiniMax--H3-orange)
-![Version](https://img.shields.io/badge/Version-v1.0.0--beta-purple)
+![Version](https://img.shields.io/badge/Version-v1.4.0-purple)
 ![GPU](https://img.shields.io/badge/GPU-RTX%205060%208GB-red)
 
 基于 ComfyUI 的 MiniMax-H3 参考生视频（Reference-to-Video）长视频工作流。通过多段分镜头拼接突破单段时长限制，集成 Larry Turbo 加速，在 RTX 5060 8GB 入门级显卡上可稳定生成 15 秒+ 带音频的长视频。
@@ -16,19 +16,11 @@
 
 | 方案 | 15秒视频耗时 | 采样步数 | 说明 |
 |------|-------------|----------|------|
-| 社区导演台（默认配置） | ~50-60 分钟 | 25 步 | res_multistep 采样器，无加速 |
-| 本工作流 v0.9 | ~18-22 分钟 | 6 步 | Larry Turbo LoRA + euler 采样器 |
-| 本工作流 v1.0.0-beta | ~22.4 分钟（20秒视频） | 5 步 | 六区域布局优化，CreateVideo+SaveVideo稳定输出 |
+| 社区导演台（默认配置） | ~50-60 分钟 | 25 步 | 无加速，官方默认配置 |
+| 本工作流 v1.3.1（上一稳定版） | ~15-18 分钟 | 5 步 | 音频星形参考 + CrossFade过渡 |
+| **本工作流 v1.4.0（当前主推）** | **~22.1 分钟** | **5 步** | **H3 Motion Context + latent上下文传递 + 7区域布局** |
 
-**提速约 2.5-3 倍。**
-
-```mermaid
-xychart-beta
-    title "长视频生成耗时对比（RTX 5060 8GB，0.3MP，5段分镜头）"
-    x-axis ["社区导演台\n(25步,15s)", "本工作流 v0.9\n(6步,15s)", "本工作流 v1.0\n(5步,20s)"]
-    y-axis "耗时（分钟）" 0 --> 70
-    bar [55, 20, 22.4]
-```
+> 注：v1.4.0 耗时略高于 v1.3.1 是因为 Motion Context 增加了上下文编码/解码开销，但音画连贯性显著提升。
 
 ### 🖥️ 测试环境
 
@@ -45,115 +37,37 @@ xychart-beta
 | Python | 3.12.10 |
 | 测试参数 | 0.3MP 分辨率，5 段分镜头，每段 3 秒，共 15 秒 |
 
-> 💡 8GB 显存是入门级配置，本工作流在该显存下可稳定运行 0.3MP 分辨率；更高配置的机器（如 RTX 4090/5090、24GB+ 显存）速度更快，可跑更高分辨率。
+> 💡 8GB 显存是入门级配置，本工作流在该显存下可稳定运行 0.3MP 分辨率；更高配置的机器速度更快，可跑更高分辨率。
 
 ---
 
 ## ✨ 功能特点
 
 - **🎞️ 多段分镜头**：5 段独立分镜头，每段可单独设置提示词和时长（1-10秒）
-- **📝 通用提示词**：人物/场景/音频约束统一编写，自动拼接到每段分镜头提示词前
-- **🚀 Larry Turbo 加速**：v4-600 LoRA + 6 步 euler 采样，相比官方 25 步配置提速约 2.5-3 倍
-- **🔗 自动拼接**：画面（ImageBatch）和音频（AudioConcatenate）自动拼接成完整长视频
-- **👤 参考图锁定**：所有分镜头共享同一参考图，保持人物身份和服饰一致性
+- **🔗 H3 Motion Context**：latent 直接传递，无色偏无软化，音画连贯性显著提升
+- **📝 通用提示词**：人物/场景统一编写，自动拼接到每段分镜头提示词前
+- **🚀 Larry Turbo 加速**：5 步采样，相比官方 25 步配置提速约 2.5-3 倍
 - **📐 全局分辨率控制**：统一调整所有分镜头的输出分辨率
-- **⏱️ 灵活时长**：每段分镜头可独立调整时长，帧数自动适配 MiniMax-H3 的 17k+5 网格
-- **🎥 画布内视频预览**：SaveVideo 节点支持生成后直接在画布上预览视频画面，无需到 output 目录打开文件
+- **🎥 画布内视频预览**：SaveVideo 节点支持生成后直接在画布上预览视频画面
+- **📂 7区域布局**：设置/提示词/拼接/子图/音频/视频/文档，清晰分区，节点零重叠
 
 ---
 
-## 📋 版本更新日志
+## 📋 版本更新
 
-### v1.0.0-beta（当前测试版）
+### v1.4.0（当前稳定版，2026-08-30）
 
-**发布状态**：已验证可正常运行（2026-08-29 测试通过）
+核心改进：
+- 引入 H3 Motion Context 社区方案，latent 上下文传递实现音画无缝衔接
+- 子图化架构：第1段独立生成，第2-5段链式 latent 传递
+- 7区域清晰布局，节点零重叠
+- 各分镜头默认时长 3 秒，快速测试友好
+- 新增依赖：ComfyUI-H3-Motion-Context
 
-<details>
-<summary><b>能力提升（点击展开）</b></summary>
+测试效能（RTX 5060 8GB）：
+- 5段×3秒=15秒视频，0.3MP分辨率，总耗时约 22 分钟
 
-- **六区域布局优化**：从五区域升级为六区域，提示词编辑与拼接分离，区域2更简洁
-  - 区域1：设置类（参考图/模型/分辨率/分镜头时长/采样器）
-  - 区域2：提示词编辑（通用提示词 + 5段分镜头提示词）
-  - 区域3：提示词拼接（5个StringFunction节点）
-  - 区域4：视频生成子图 + 音视频拼接链 + CreateVideo
-  - 区域5：SaveVideo 保存最终视频
-  - 区域6：Markdown Note 参数指南
-- **稳定输出方案**：放弃 VHS_VideoCombine（参数复杂、易报错），回到 v0.9 验证稳定的 CreateVideo + SaveVideo 方案
-- **节点零重叠**：所有节点位置经过计算，无重叠，便于编辑操作
-- **参考图默认留空**：工作流中不嵌入本地文件路径，避免隐私泄露，用户手动加载参考图
-
-</details>
-
-<details>
-<summary><b>测试效能记录（点击展开）</b></summary>
-
-**测试日期**：2026-08-29
-**测试机器**：RTX 5060 8GB（详见测试环境配置）
-
-| 项目 | 值 |
-|------|-----|
-| 工作流版本 | v1.0.0-beta |
-| 分镜头数量 | 5 段 |
-| 每段时长 | 4 秒（默认值） |
-| 总视频时长 | 约 20 秒 |
-| 分辨率 | 0.3MP（9:16 竖屏） |
-| 采样步数 | 5 步（simple 调度器） |
-| Larry Turbo LoRA strength | 1.0 |
-| 参考图预缩小 | 0.6MP |
-| 输出格式 | MP4（带音频） |
-| **总耗时** | **1346.62 秒（22.44 分钟）** |
-
-**效能分析**：
-- 每秒视频生成耗时约 67 秒（1346秒 / 20秒）
-- 相比社区导演台（约50-60分钟/15秒），提速约 2.5-3 倍
-- 5段分镜头依次生成，模型加载后各段复用模型权重
-- 提示词拼接节点被缓存（execution_cached），不占用生成时间
-
-</details>
-
-<details>
-<summary><b>已知缺陷（点击展开）</b></summary>
-
-- **音频风格不连贯**：每段分镜头独立生成音频，拼接后可能出现风格跳变
-- **人物细节轻微衰减**：多段生成后，后续分镜头的人物面部细节可能比第一段略糊
-- **镜头硬切**：分镜头之间为直接拼接，无过渡帧，切换可能生硬
-- **分镜头数量固定**：当前为 5 段，增减需要手动复制/删除一组节点
-
-</details>
-
----
-
-### v0.9（稳定版）
-
-**发布状态**：已验证可正常运行
-
-<details>
-<summary><b>能力提升（点击展开）</b></summary>
-
-- 从单段视频升级为 5 段分镜头拼接，支持最长约 50 秒（每段10秒）
-- 引入通用提示词节点，人物/场景/音频约束统一管理
-- 集成 Larry Turbo LoRA v4-600 加速，6 步采样
-- 每段分镜头独立时长控制（秒为单位，自动换算帧数）
-- 全局分辨率选择器，统一控制画质
-- 画面和音频自动拼接，无需手动处理
-
-</details>
-
-<details>
-<summary><b>已知缺陷（点击展开）</b></summary>
-
-- **音频风格不连贯**：每段分镜头独立生成音频，拼接后可能出现风格跳变，无法做到跨段音频一致性
-- **人物细节轻微衰减**：多段生成后，后续分镜头的人物面部细节可能比第一段略糊
-- **镜头硬切**：分镜头之间为直接拼接，无过渡帧，切换可能生硬
-- **分镜头数量固定**：当前为 5 段，增减需要手动复制/删除一组节点（提示词+时长+生成子图+拼接连接）
-- **无动态分镜头管理**：不支持点击增删分镜头（v1.0 导演台版本将支持）
-
-</details>
-
-**适用场景**：
-- 人物参考图驱动的多镜头短视频
-- 对音频连贯性要求不高的内容（如纯环境音、背景音乐可后期替换）
-- 8GB 显存入门级显卡用户
+> 更早版本的详细变更记录请参阅 [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -161,17 +75,18 @@ xychart-beta
 
 ### 1. ComfyUI 版本要求
 
-需要 **ComfyUI v0.30.0 及以上**（含官方 MiniMax-H3 节点支持，PR #15224、#15228）。
+需要 **ComfyUI v0.34.0 及以上**（含原生 H3 AV-mask 支持和官方 MiniMax-H3 节点）。
 
 推荐使用秋叶整合包，或从官方仓库更新到最新版。
 
-### 2. 自定义节点（必装 3 个插件）
+### 2. 自定义节点（必装 4 个插件）
 
 | 插件 | 用途 | 安装地址 |
 |------|------|----------|
 | ComfyUI-MiniMax-H3-Turbo | Larry Turbo 加速节点（Turbo LoRA + Turbo Sampler） | `https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo.git` |
 | ComfyUI-Custom-Scripts | StringFunction 字符串拼接节点（pythongosssss） | `https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git` |
 | ComfyUI-VideoHelperSuite | 视频拼接节点（VHS：ImageBatch、AudioConcatenate） | `https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git` |
+| **ComfyUI-H3-Motion-Context** | **H3 Motion Context 上下文传递（v1.4.0 新增）** | `https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git` |
 
 <details>
 <summary><b>安装方法（点击展开）</b></summary>
@@ -188,15 +103,9 @@ cd ComfyUI/custom_nodes
 git clone https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo.git
 git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
+git clone https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git
 ```
 重启 ComfyUI。
-
-**安装后验证**：节点列表中应出现以下节点：
-- `MiniMaxH3TurboLoRA`
-- `MiniMaxH3TurboSampler`
-- `StringFunction|pysssss`
-- `ImageBatch`（VHS）
-- `AudioConcatenate`（VHS）
 
 </details>
 
@@ -220,47 +129,44 @@ git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 
 ---
 
-## 🚀 快速开始（傻瓜式步骤）
+## 🚀 快速开始
 
 ### 第一步：确认环境
 
-1. 确认 ComfyUI 版本 ≥ v0.30.0
-2. 确认已安装上述 3 个自定义节点插件
+1. 确认 ComfyUI 版本 ≥ v0.34.0
+2. 确认已安装上述 4 个自定义节点插件
 3. 确认 5 个模型文件已放入对应目录
 4. 启动 ComfyUI，无报错
 
 ### 第二步：加载工作流
 
 1. 打开 ComfyUI 网页界面
-2. 将 `workflows/minimax_h3_r2v_长视频_5段分镜头_larry加速_v0.9.json` 拖入画布
+2. 将 `workflows/minimax_h3_r2v_longvideo_v1.4.0.json` 拖入画布
 3. 工作流自动加载，所有节点显示正常（无红色缺失节点）
 
 ### 第三步：加载参考图
 
-1. 找到 **LoadImage** 节点（画布左侧）
+1. 找到 **LoadImage** 节点（画布左侧区域1）
 2. 点击上传按钮，选择一张人物参考图
-3. 参考图建议：清晰的单人或多人正面/半身照，分辨率不限（工作流会自动缩放到 0.6MP 编码）
+3. 参考图建议：清晰的单人或多人正面/半身照
 
 ### 第四步：编写提示词
 
-1. **通用提示词**节点（蓝色大文本框）：已预填模板，按需修改人物描述、场景、音频约束
-   - 必须包含：人物参考声明（如"以下画面人物参考参考图"）
-   - 建议包含：场景描述、光影风格、音频约束（如"纯环境音，无人声旁白"）
+1. **通用提示词**节点（区域2蓝色大文本框）：已预填模板，按需修改人物描述、场景、音频约束
 2. **分镜头1-5提示词**节点：分别编写每段的景别、动作、剧情
    - 每段提示词会自动与通用提示词拼接
-   - 建议格式：景别 + 角度 + 人物动作 + 表情 + 环境细节
 
 ### 第五步：调整参数
 
-1. **每段时长**：5 个时长节点（PrimitiveFloat），默认 3 秒，可独立调整（1-10秒）
-2. **全局分辨率**：ResolutionSelector 节点，默认 0.3MP（8GB显存推荐），可选 0.2/0.4/0.5MP
-3. **随机种子**：每个分镜头有独立 seed，默认 randomize，可固定复现
+1. **每段时长**：5 个时长节点，默认 3 秒，可独立调整（1-10秒）
+2. **全局分辨率**：ResolutionSelector 节点，默认 0.3MP（8GB显存推荐）
+3. **随机种子**：每个分镜头有独立 seed，默认 randomize
 
 ### 第六步：生成
 
 1. 点击 **Queue Prompt**
-2. 等待生成（5段×3秒约18-22分钟，RTX 5060 8GB）
-3. 生成完成后，视频保存在 `ComfyUI/output/` 目录
+2. 等待生成（5段×3秒约22分钟，RTX 5060 8GB）
+3. 生成完成后，视频在 SaveVideo 节点可直接预览
 
 ---
 
@@ -268,63 +174,42 @@ git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git
 
 ```mermaid
 graph LR
-    A[📷 参考图<br/>LoadImage] --> B[📐 预缩小<br/>0.6MP]
-    C[📝 通用提示词] --> D1[🔗 字符串拼接]
-    C --> D2[🔗 字符串拼接]
-    C --> D3[🔗 字符串拼接]
-    C --> D4[🔗 字符串拼接]
-    C --> D5[🔗 字符串拼接]
-    D1 --> E1[🎬 分镜头1<br/>提示词+时长]
-    D2 --> E2[🎬 分镜头2<br/>提示词+时长]
-    D3 --> E3[🎬 分镜头3<br/>提示词+时长]
-    D4 --> E4[🎬 分镜头4<br/>提示词+时长]
-    D5 --> E5[🎬 分镜头5<br/>提示词+时长]
-    B --> E1
-    B --> E2
-    B --> E3
-    B --> E4
-    B --> E5
-    F[⚡ Larry Turbo LoRA] --> E1
-    F --> E2
-    F --> E3
-    F --> E4
-    F --> E5
-    E1 --> G[🖼️ ImageBatch<br/>拼接画面]
-    E2 --> G
-    E3 --> G
-    E4 --> G
-    E5 --> G
-    E1 --> H[🔊 AudioConcatenate<br/>拼接音频]
-    E2 --> H
-    E3 --> H
-    E4 --> H
-    E5 --> H
-    G --> I[🎥 CreateVideo]
-    H --> I
-    I --> J[💾 SaveVideo<br/>输出MP4]
+    A[参考图] --> B[预缩小]
+    C[通用提示词] --> D[分镜头提示词拼接×5]
+    B --> E1[sg_a 第1段独立生成]
+    D --> E1
+    E1 -->|latent| E2[sg_b 第2段]
+    E2 -->|latent| E3[sg_b 第3段]
+    E3 -->|latent| E4[sg_b 第4段]
+    E4 -->|latent| E5[sg_b 第5段]
+    E1 & E2 & E3 & E4 & E5 --> F[链式ImageBatch拼接画面]
+    E1 & E2 & E3 & E4 & E5 --> G[链式AudioConcatenate拼接音频]
+    F & G --> H[CreateVideo]
+    H --> I[SaveVideo 输出MP4]
 ```
 
-每个分镜头的生成子图包含：
+每个分镜头生成子图包含：
 - MiniMaxH3ReferenceToVideo（官方参考生视频 conditioning）
+- H3MotionContext（上下文传递，第2-5段）
 - MiniMaxH3TurboSampler（Larry 加速采样器）
-- BasicScheduler（simple 调度器，6步）
-- KSamplerSelect（euler 采样器）
 - VAE 解码（画面+音频分离解码）
 
 ---
 
 ## ⚙️ 关键参数说明
 
-| 参数 | 默认值 | 合理范围 | 说明 |
-|------|--------|----------|------|
-| 全局分辨率 | 0.3MP (736×416) | 0.2-0.5MP | 8GB显存推荐0.3MP；12GB+可尝试0.4MP |
-| 采样步数 | 6 | 4-8 | Larry Turbo推荐范围；4步最快但大动态可能拖影；6-8步质量更好；超过8步会过锐化 |
-| 采样器 | euler | euler | 新版ComfyUI中等同于Turbo Sampler；不建议换其他采样器 |
-| 调度器 | simple | simple | Larry推荐，不建议修改 |
-| LoRA strength | 1.0 | 0.8-1.2 | 固定1.0为Larry调优值；模糊可微调到1.05-1.2，过锐可降到0.8-0.95 |
-| 每段时长 | 3秒 | 1-10秒 | 帧数自动适配17k+5网格；单段过长可能OOM |
-| CFG | 1.0 | 1.0 | MiniMax-H3官方推荐固定值 |
-| 参考图预缩小 | 0.6MP | 0.5-1.0MP | 降低编码显存占用；原图很糊时可提高到0.8MP |
+| 参数 | 默认值 | 说明 |
+|------|--------|------|
+| 全局分辨率 | 0.3MP (736×416) | 8GB显存推荐；12GB+可尝试0.4MP |
+| 采样步数 | 5 | Larry Turbo推荐范围4-8步 |
+| 采样器 | euler | 新版ComfyUI中等同于Turbo Sampler |
+| 调度器 | simple | Larry推荐，不建议修改 |
+| LoRA strength | 1.0 | Larry调优值，不建议修改 |
+| 每段时长 | 3秒 | 1-10秒可调，帧数自动适配17k+5网格 |
+| CFG | 1.0 | MiniMax-H3官方推荐固定值 |
+| context_length | 22帧 | 上下文帧数，约0.92秒，官方推荐 |
+| audio_context_length | 24帧 | 音频上下文，1秒，精确对齐40Hz网格 |
+| Trim match_tail | true | 自动对齐音频尾部，避免累积误差 |
 
 ---
 
@@ -351,7 +236,7 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 按以下顺序尝试：
 1. 降低全局分辨率到 0.2MP
 2. 减少每段时长（如从5秒降到3秒）
-3. 开启 Turbo LoRA 节点的 `low_vram` 模式（merge模式，画质略软但显存占用更低）
+3. 开启 Turbo LoRA 节点的 `low_vram` 模式
 4. 关闭其他占用显存的程序
 
 </details>
@@ -359,7 +244,7 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 <details>
 <summary><b>Q: 人物不一致/变脸怎么办？</b></summary>
 
-1. 确保通用提示词中明确声明人物参考（如"所有画面人物严格参考参考图的外貌、服饰、体型"）
+1. 确保通用提示词中明确声明人物参考
 2. 参考图选择清晰的正面照，避免遮挡
 3. 分镜头提示词避免描述与参考图矛盾的外貌特征
 4. 降低采样步数到4步（减少重绘幅度）
@@ -369,7 +254,7 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 <details>
 <summary><b>Q: 音频有人声旁白/说话声怎么办？</b></summary>
 
-在通用提示词中明确声明："纯环境音效，无人声旁白，无对话，无唱歌，无语音"。工作流默认已包含此约束，如被修改请补回。
+在通用提示词中明确声明："纯环境音效，无人声旁白，无对话，无唱歌，无语音"。工作流默认已包含此约束。
 
 </details>
 
@@ -381,21 +266,6 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 2. 将新分镜头的画面输出连接到 ImageBatch
 3. 将新分镜头的音频输出连接到 AudioConcatenate
 4. 调整通用提示词的字符串拼接节点数量
-5. v1.0 导演台版本将支持点击动态增删分镜头
-
-</details>
-
-<details>
-<summary><b>Q: 输出视频在哪里？</b></summary>
-
-保存在 `ComfyUI/output/` 目录，文件名格式为 `ComfyUI_xxxxx_.mp4`。
-
-</details>
-
-<details>
-<summary><b>Q: 可以用这个工作流做纯风景/动物视频吗？</b></summary>
-
-可以，参考图换成风景或动物即可，提示词相应调整。但 r2v 模式主要优化人物参考，非人物场景效果可能不如 t2v/i2v。
 
 </details>
 
@@ -403,26 +273,22 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 
 ## ⚠️ 已知限制
 
-1. **🎵 音频连贯性**：多段音频独立生成，无法跨段保持风格一致。建议后期用音频编辑软件替换背景音乐。
-2. **📉 长视频质量衰减**：超过5段后，后续分镜头质量可能明显下降。建议控制在5段以内。
-3. **✂️ 无过渡效果**：分镜头间为硬切，如需淡入淡出等过渡需后期处理。
-4. **💾 显存限制**：8GB显存最多稳定运行0.3MP、每段5秒以内。更高分辨率或更长单段需要更大显存。
-5. **🌐 提示词语言**：推荐中文提示词，CLIP编码器（Qwen3-VL）对中文支持良好。
+1. **分镜头数量固定**：当前为 5 段，增减需要手动复制/删除一组节点
+2. **显存限制**：8GB显存建议 0.3MP 分辨率、单段 5 秒以内
+3. **提示词语言**：推荐中文提示词，CLIP编码器（Qwen3-VL）对中文支持良好
 
 ---
 
-## 🗺️ 后续版本规划
+## 🗺️ 后续方向
 
-- **v1.0.x**（迭代中）：优化布局、修复缺陷、稳定 v1.0 版本
-- **v1.1**（规划中）：优化布局，评估是否将区域4的两列合并或调整，减少视觉列数；探索更稳定的视频输出方案
-- **v2.0**（远期规划）：基于社区导演台插件定制，支持点击动态增删分镜头、公共参数区统一管理，仍集成 Larry Turbo 加速
+探索更优的音画连贯性方案和动态分镜头管理能力。
 
 ---
 
 ## 🙏 致谢
 
 - [Larryvrh/ComfyUI-MiniMax-H3-Turbo](https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo) — Turbo 加速节点和 LoRA 权重
-- [AIMixer/ComfyUI_MiniMaxH3_Director](https://github.com/AIMixer/ComfyUI_MiniMaxH3_Director) — 导演台插件，v1.0 版本参考
+- [NikoDemon80/ComfyUI-H3-Motion-Context](https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context) — H3 Motion Context 上下文传递节点
 - [Comfy-Org/MiniMax-H3](https://huggingface.co/Comfy-Org/MiniMax-H3) — 官方模型权重
 - [pythongosssss/ComfyUI-Custom-Scripts](https://github.com/pythongosssss/ComfyUI-Custom-Scripts) — StringFunction 节点
 - [Kosinkadink/ComfyUI-VideoHelperSuite](https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite) — VHS 视频拼接节点
@@ -432,8 +298,6 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 ## ☕ 支持作者
 
 这个工作流完全免费开源，没有任何付费功能。如果它帮你节省了时间，或者你觉得好用，欢迎请作者喝杯咖啡 ☕
-
-你的咖啡赞助 = 更多熬夜更新的动力 🤔
 
 <p align="center">
   <img src="assets/wechat_reward_qrcode.png" alt="微信赞赏码" width="280">
