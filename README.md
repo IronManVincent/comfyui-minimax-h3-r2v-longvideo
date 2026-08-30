@@ -92,9 +92,11 @@
 ### 输出视频（5段×3秒 = 15秒，0.3MP，9:16竖屏）
 
 <p align="center">
-  <video src="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v1.4.0/demo_output.mp4" controls width="350" poster="assets/examples/reference_input.png">
-    您的浏览器不支持视频播放，请<a href="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v1.4.0/demo_output.mp4">下载查看</a>。
-  </video>
+  <a href="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v1.4.0/demo_output.mp4">
+    <img src="assets/examples/reference_input.png" alt="点击播放演示视频" width="300" style="border-radius: 8px;">
+  </a>
+  <br>
+  <i>👆 点击图片播放演示视频（15秒，纯乐器配乐）</i>
 </p>
 
 **测试参数**：
