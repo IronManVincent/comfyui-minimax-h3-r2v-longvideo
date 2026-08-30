@@ -92,8 +92,8 @@
 ### 输出视频（5段×3秒 = 15秒，0.3MP，9:16竖屏）
 
 <p align="center">
-  <video src="assets/examples/demo_output.mp4" controls width="350" poster="assets/examples/reference_input.png">
-    您的浏览器不支持视频播放，请下载查看。
+  <video src="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v1.4.0/demo_output.mp4" controls width="350" poster="assets/examples/reference_input.png">
+    您的浏览器不支持视频播放，请<a href="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v1.4.0/demo_output.mp4">下载查看</a>。
   </video>
 </p>
 
