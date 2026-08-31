@@ -1,4 +1,4 @@
-# 🎬 ComfyUI MiniMax-H3 R2V Long Video Workflow
+﻿# 🎬 ComfyUI MiniMax-H3 R2V Long Video Workflow
 
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-ComfyUI-blue)
@@ -381,14 +381,6 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 - [ ] 更多分镜头模板：电影感、写真、剧情等预设提示词包
 
 > 动态增删分镜头是社区用户反馈最多的需求，也是下一阶段的核心开发方向。
-
----
-
-## 📚 相关文档
-
-- [示例产出详细说明](docs/examples.md) — 输入参考图参数、输出视频配置、完整提示词
-- [版本更新日志](CHANGELOG.md) — 各版本详细更新记录
-- [开发流程与规范](docs/DEVELOPMENT.md) — 开发工作流、发版检查清单、经验教训
 
 ---
 
