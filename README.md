@@ -3,7 +3,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-ComfyUI-blue)
 ![Model](https://img.shields.io/badge/Model-MiniMax--H3-orange)
-![Version](https://img.shields.io/badge/Version-v1.4.0-purple)
+![Version](https://img.shields.io/badge/Version-v1.4.1-purple)
 ![GPU](https://img.shields.io/badge/GPU-RTX%205060%208GB-red)
 
 基于 ComfyUI 的 MiniMax-H3 参考生视频（Reference-to-Video）长视频工作流。通过多段分镜头拼接突破单段时长限制，集成 Larry Turbo 加速，在 RTX 5060 8GB 入门级显卡上可稳定生成 15 秒+ 带音频的长视频。
@@ -17,10 +17,14 @@
 | 方案 | 15秒视频耗时 | 采样步数 | 说明 |
 |------|-------------|----------|------|
 | 社区导演台（默认配置） | ~50-60 分钟 | 25 步 | 无加速，官方默认配置 |
-| 本工作流 v1.3.1（上一稳定版） | ~15-18 分钟 | 5 步 | 音频星形参考 + CrossFade过渡 |
-| **本工作流 v1.4.0（当前主推）** | **~23.6 分钟** | **5 步** | **H3 Motion Context + latent上下文传递 + 7区域布局** |
+| 本工作流 v1.4.0（上一稳定版） | ~22 分钟 | 5 步 | H3 Motion Context，音频衰减明显 |
+| **本工作流 v1.4.1（当前主推）** | **~36.6 分钟** | **8 步** | **音频质量显著提升，衰减轻微，连贯性大幅改善** |
 
-> 注：v1.4.0 耗时略高于 v1.3.1 是因为 Motion Context 增加了上下文编码/解码开销，但音画连贯性显著提升。最新测试（5段×3秒=15秒，0.3MP，9:16竖屏）耗时 1415秒。
+> 💡 **两种模式**：
+> - **高质量模式（默认，8步）**：音频质量好，连贯性强，耗时约36分钟
+> - **快速测试模式（5步）**：速度快约40%，但音频衰减明显，适合快速验证画面
+>
+> Larry Turbo LoRA 作者指出步数太少会"thicken the sound"（音频变浑浊），8 步是音质与速度的均衡点。
 
 ### 🖥️ 测试环境
 
@@ -67,9 +71,9 @@
 - **🎞️ 多段分镜头**：5 段独立分镜头，每段可单独设置提示词和时长（1-10秒）
 - **🔗 H3 Motion Context**：latent 直接传递，无色偏无软化，音画连贯性显著提升
 - **📝 通用提示词**：人物/场景统一编写，自动拼接到每段分镜头提示词前
-- **🚀 Larry Turbo 加速**：5 步采样，相比官方 25 步配置提速约 2.5-3 倍
+- **🚀 Larry Turbo 加速**：8 步采样（默认），相比官方 25 步配置提速约 2 倍
 - **📐 全局分辨率控制**：统一调整所有分镜头的输出分辨率
-- **🎥 画布内视频预览**：SaveVideo 节点支持生成后直接在画布上预览视频画面
+- **🎥 画布内视频预览**：VHS_VideoCombine 节点支持生成后直接在画布上预览视频
 - **📂 7区域布局**：设置/提示词/拼接/子图/音频/视频/文档，清晰分区，节点零重叠
 - **🎵 纯乐器配乐提示词**：通用提示词内置音频控制模板，引导生成无人声纯乐器背景音乐
 
@@ -89,22 +93,24 @@
 
 > 参考图详细生成参数与提示词见 [docs/examples.md](docs/examples.md)
 
-### 输出视频（5段×3秒 = 15秒，0.3MP，9:16竖屏）
+### 输出视频（5段×3秒 = 15秒，0.3MP，9:16竖屏，v1.4.1 8步采样）
 
 <p align="center">
   <a href="https://ironmanvincent.github.io/comfyui-minimax-h3-r2v-longvideo/assets/examples/demo_output.mp4" target="_blank">
     <img src="assets/examples/reference_input.png" alt="点击播放演示视频" width="300" style="border-radius: 8px; border: 2px solid #e1e4e8;">
   </a>
   <br>
-  <i>👆 点击图片播放演示视频（15秒，纯乐器配乐，5段分镜头）</i>
+  <i>👆 点击图片播放演示视频（15秒，纯乐器配乐，5段分镜头，8步采样）</i>
 </p>
 
 **测试参数**：
+- 工作流版本：v1.4.1
 - 分辨率：0.3MP（9:16竖屏）
 - 分镜头：5段，每段3秒
 - 总时长：15秒
-- 耗时：约23.6分钟（RTX 5060 8GB）
-- 音频：纯乐器配乐（钢琴+吉他，无人声）
+- 采样步数：8步（simple调度器）
+- 耗时：约36.6分钟（RTX 5060 8GB）
+- 音频：纯乐器配乐（无人声）
 
 **分镜头设计**：
 1. 上半身中景，人物动态姿势，镜头微推
@@ -117,7 +123,18 @@
 
 ## 📋 版本更新
 
-### v1.4.0（当前稳定版，2026-08-30）
+### v1.4.1（当前稳定版，2026-09-01）
+
+核心改进：
+- **采样步数 5→8 步**：音频质量显著提升，消除音质衰减、卡顿、重复现象
+- **音频连贯性大幅改善**：各分镜音频风格统一，衔接自然
+- **CreateVideo 替换为 VHS_VideoCombine**：执行更稳定，支持API和前端运行
+- **Markdown Note 更新**：含性能对照表和参数指南
+
+测试效能（RTX 5060 8GB）：
+- 5段×3秒=15秒视频，0.3MP分辨率，8步采样，总耗时约 36.6 分钟
+
+### v1.4.0（上一稳定版，2026-08-30）
 
 核心改进：
 - 引入 H3 Motion Context 社区方案，latent 上下文传递实现音画无缝衔接
@@ -125,9 +142,6 @@
 - 7区域清晰布局，节点零重叠
 - 各分镜头默认时长 3 秒，快速测试友好
 - 新增依赖：ComfyUI-H3-Motion-Context
-
-测试效能（RTX 5060 8GB）：
-- 5段×3秒=15秒视频，0.3MP分辨率，总耗时约 22 分钟
 
 > 更早版本的详细变更记录请参阅 [CHANGELOG.md](CHANGELOG.md)
 
@@ -147,8 +161,8 @@
 |------|------|----------|
 | ComfyUI-MiniMax-H3-Turbo | Larry Turbo 加速节点（Turbo LoRA + Turbo Sampler） | `https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo.git` |
 | ComfyUI-Custom-Scripts | StringFunction 字符串拼接节点（pythongosssss） | `https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git` |
-| ComfyUI-VideoHelperSuite | 视频拼接节点（VHS：ImageBatch、AudioConcatenate） | `https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git` |
-| **ComfyUI-H3-Motion-Context** | **H3 Motion Context 上下文传递（v1.4.0 新增）** | `https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git` |
+| ComfyUI-VideoHelperSuite | 视频拼接节点（VHS：ImageBatch、AudioConcatenate、VHS_VideoCombine） | `https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite.git` |
+| **ComfyUI-H3-Motion-Context** | **H3 Motion Context 上下文传递** | `https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git` |
 
 <details>
 <summary><b>安装方法（点击展开）</b></summary>
@@ -203,7 +217,7 @@ git clone https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git
 ### 第二步：加载工作流
 
 1. 打开 ComfyUI 网页界面
-2. 将 `workflows/minimax_h3_r2v_longvideo_v1.4.0.json` 拖入画布
+2. 将 `workflows/minimax_h3_r2v_longvideo_v1.4.1.json` 拖入画布
 3. 工作流自动加载，所有节点显示正常（无红色缺失节点）
 
 ### 第三步：加载参考图
@@ -222,13 +236,14 @@ git clone https://github.com/NikoDemon80/ComfyUI-H3-Motion-Context.git
 
 1. **每段时长**：5 个时长节点，默认 3 秒，可独立调整（1-10秒）
 2. **全局分辨率**：ResolutionSelector 节点，默认 0.3MP（8GB显存推荐）
-3. **随机种子**：每个分镜头有独立 seed，默认 randomize
+3. **采样步数**：BasicScheduler 节点，默认 8 步（高质量），快速测试可降为 5 步
+4. **随机种子**：每个分镜头有独立 seed，默认 randomize
 
 ### 第六步：生成
 
 1. 点击 **Queue Prompt**
-2. 等待生成（5段×3秒约22分钟，RTX 5060 8GB）
-3. 生成完成后，视频在 SaveVideo 节点可直接预览
+2. 等待生成（5段×3秒约36分钟，RTX 5060 8GB，8步采样）
+3. 生成完成后，视频在 VHS_VideoCombine 节点可直接预览
 
 ---
 
@@ -246,8 +261,7 @@ graph LR
     E4 -->|latent| E5[sg_b 第5段]
     E1 & E2 & E3 & E4 & E5 --> F[链式ImageBatch拼接画面]
     E1 & E2 & E3 & E4 & E5 --> G[链式AudioConcatenate拼接音频]
-    F & G --> H[CreateVideo]
-    H --> I[SaveVideo 输出MP4]
+    F & G --> H[VHS_VideoCombine 输出MP4]
 ```
 
 每个分镜头生成子图包含：
@@ -263,13 +277,13 @@ graph LR
 | 参数 | 默认值 | 说明 |
 |------|--------|------|
 | 全局分辨率 | 0.3MP (736×416) | 8GB显存推荐；12GB+可尝试0.4MP |
-| 采样步数 | 5 | Larry Turbo推荐范围4-8步 |
+| 采样步数 | **8** | 默认8步（高质量）；快速测试可降为5步；Larry Turbo推荐范围4-8步 |
 | 采样器 | euler | 新版ComfyUI中等同于Turbo Sampler |
 | 调度器 | simple | Larry推荐，不建议修改 |
 | LoRA strength | 1.0 | Larry调优值，不建议修改 |
 | 每段时长 | 3秒 | 1-10秒可调，帧数自动适配17k+5网格 |
 | CFG | 1.0 | MiniMax-H3官方推荐固定值 |
-| context_length | 22帧 | 上下文帧数，约0.92秒，官方推荐 |
+| context_length | 22帧 | 上下文帧数，约0.92秒，作者推荐 |
 | audio_context_length | 24帧 | 音频上下文，1秒，精确对齐40Hz网格 |
 | Trim match_tail | true | 自动对齐音频尾部，避免累积误差 |
 
@@ -321,6 +335,13 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 </details>
 
 <details>
+<summary><b>Q: 8步采样太慢，能降回5步吗？</b></summary>
+
+可以。将 BasicScheduler 节点的步数从 8 改为 5 即可。5步速度快约40%，但音频衰减明显，适合快速验证画面效果。正式产出建议用8步。
+
+</details>
+
+<details>
 <summary><b>Q: 如何增加/减少分镜头数量？</b></summary>
 
 当前版本需要手动操作：
@@ -338,6 +359,7 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 1. **分镜头数量固定**：当前为 5 段，增减需要手动复制/删除一组节点
 2. **显存限制**：8GB显存建议 0.3MP 分辨率、单段 5 秒以内
 3. **提示词语言**：推荐中文提示词，CLIP编码器（Qwen3-VL）对中文支持良好
+4. **8步采样耗时**：比5步慢约60%，但音频质量显著提升
 
 ---
 
@@ -345,16 +367,16 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 
 ### 已完成
 - [x] 固定5段分镜头长视频生成
-- [x] Larry Turbo 4-5步加速，性能比社区导演台快2-3倍
+- [x] Larry Turbo 加速，性能比社区导演台快2-3倍
 - [x] H3 Motion Context 上下文传递，音画连贯性提升
 - [x] 通用提示词+分镜头提示词分离架构
 - [x] 全局分辨率控制 + 各分镜头独立时长控制
 - [x] 纯乐器配乐提示词模板
 - [x] 7区域清晰布局
+- [x] **音频质量优化（v1.4.1）**：8步采样解决音频衰减问题
 
 ### 进行中 / 规划中
 - [ ] **动态增删分镜头**（核心需求）：用户可自由添加/删除分镜头组，无需手动复制节点
-- [ ] 音频连贯性优化：解决多段音频质量衰减问题
 - [ ] 分镜头过渡效果优化：CrossFade / RIFE插帧等平滑过渡
 - [ ] 更多分镜头模板：电影感、写真、剧情等预设提示词包
 
