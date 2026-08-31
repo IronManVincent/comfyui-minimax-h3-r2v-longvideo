@@ -384,6 +384,14 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，工作流自动计算�
 
 ---
 
+## 📚 相关文档
+
+- [示例产出详细说明](docs/examples.md) — 输入参考图参数、输出视频配置、完整提示词
+- [版本更新日志](CHANGELOG.md) — 各版本详细更新记录
+- [开发流程与规范](docs/DEVELOPMENT.md) — 开发工作流、发版检查清单、经验教训
+
+---
+
 ## 🙏 致谢
 
 - [Larryvrh/ComfyUI-MiniMax-H3-Turbo](https://github.com/larryvrh/ComfyUI-MiniMax-H3-Turbo) — Turbo 加速节点和 LoRA 权重
