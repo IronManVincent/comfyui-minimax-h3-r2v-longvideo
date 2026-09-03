@@ -68,6 +68,39 @@ git clone https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo.git
 4. 点击 `➕ 添加分镜头` 添加更多分镜头，或点击 `📋 加载五段模板` 一键加载人像写真模板
 5. 点击 `Queue Prompt` 生成视频
 
+## 🎬 示例产出
+
+以下为导演台实际生成效果，参考图与产出视频均来自本地测试。
+
+### 输入参考图
+
+使用 Z-Image Turbo 官方文生图模板生成，仅作为视频工作流的输入演示。
+
+<p align="center">
+  <img src="assets/examples/reference_input.png" alt="输入参考图" width="300">
+</p>
+
+### 输出视频（2段×3秒 = 6秒，0.3MP，9:16竖屏，v2.0.0 5步采样，bypass模式）
+
+<p align="center">
+  <a href="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v2.0.0/MiniMax_H3_LongVideo_v2.0.0_demo.mp4" target="_blank">
+    <img src="assets/examples/reference_input.png" alt="点击播放演示视频" width="300" style="border-radius: 8px; border: 2px solid #e1e4e8;">
+  </a>
+  <br>
+  <i>👆 点击图片播放演示视频（6秒，纯乐器配乐，2段分镜头，5步采样）</i>
+</p>
+
+**测试参数**：
+
+| 参数 | 值 |
+|------|-----|
+| 采样步数 | 5步 |
+| 分辨率 | 0.3MP（9:16竖屏） |
+| 分镜头数 | 2段 |
+| 单段时长 | 3秒 |
+| Larry LoRA | v4 step600，bypass模式 |
+| 耗时 | ~13分钟（RTX 5060 8G） |
+
 ## 节点参数
 
 | 参数 | 类型 | 默认值 | 说明 |
