@@ -1,4 +1,4 @@
-# 🎬 ComfyUI MiniMax-H3 长视频导演台
+﻿# 🎬 ComfyUI MiniMax-H3 长视频导演台
 
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-ComfyUI-blue)
@@ -240,7 +240,7 @@ git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 ### 节点界面
 
 <p align="center">
-  <img src="assets/examples/director_ui.png" alt="导演台节点界面" width="800" style="border-radius: 8px; border: 2px solid #e1e4e8;">
+  <img src="assets/examples/director_ui.jpg" alt="导演台节点界面" width="800" style="border-radius: 8px; border: 2px solid #e1e4e8;">
 </p>
 
 导演台节点包含以下区域：
@@ -494,3 +494,4 @@ MiniMax-H3 的视频帧数必须符合 `17×k+5` 网格，导演台节点自动�
 ## 📄 License
 
 MIT License — 详见 [LICENSE](LICENSE) 文件。
+
