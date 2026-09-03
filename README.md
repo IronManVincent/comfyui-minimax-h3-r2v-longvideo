@@ -239,8 +239,9 @@ git clone https://github.com/pythongosssss/ComfyUI-Custom-Scripts.git
 
 ### 节点界面
 
-<!-- TODO: 导演台节点界面截图 -->
-<!-- 截图位置：assets/examples/director_ui.png -->
+<p align="center">
+  <img src="assets/examples/director_ui.png" alt="导演台节点界面" width="800" style="border-radius: 8px; border: 2px solid #e1e4e8;">
+</p>
 
 导演台节点包含以下区域：
 
