@@ -1,0 +1,214 @@
+{
+  "last_node_id": 10,
+  "last_link_id": 15,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [50, 50],
+      "size": [320, 100],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "UNETLoader"},
+      "widgets_values": ["minimax_h3_ref2va_pruned_int8_convrot.safetensors", "default"]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [50, 180],
+      "size": [320, 80],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "CLIP", "type": "CLIP", "links": [2], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "CLIPLoader"},
+      "widgets_values": ["qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors", "minimax", "default"]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [50, 290],
+      "size": [320, 60],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "VAE", "type": "VAE", "links": [3], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "VAELoader"},
+      "widgets_values": ["minimax_h3_video_vae_fp16.safetensors"]
+    },
+    {
+      "id": 4,
+      "type": "VAELoader",
+      "pos": [50, 380],
+      "size": [320, 60],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "VAE", "type": "VAE", "links": [4], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "VAELoader"},
+      "widgets_values": ["minimax_h3_audio_vae_fp32.safetensors"]
+    },
+    {
+      "id": 5,
+      "type": "MiniMaxH3TurboSampler",
+      "pos": [420, 50],
+      "size": [200, 60],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "SAMPLER", "type": "SAMPLER", "links": [5], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "MiniMaxH3TurboSampler"},
+      "widgets_values": []
+    },
+    {
+      "id": 6,
+      "type": "BasicScheduler",
+      "pos": [420, 140],
+      "size": [200, 100],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 6}
+      ],
+      "outputs": [
+        {"name": "SIGMAS", "type": "SIGMAS", "links": [7], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "BasicScheduler"},
+      "widgets_values": ["simple", 5, 1.0]
+    },
+    {
+      "id": 7,
+      "type": "LoadImage",
+      "pos": [420, 270],
+      "size": [320, 320],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {"name": "IMAGE", "type": "IMAGE", "links": [8], "slot_index": 0},
+        {"name": "MASK", "type": "MASK", "links": null}
+      ],
+      "properties": {"Node name for S&R": "LoadImage"},
+      "widgets_values": ["example.png", "image"]
+    },
+    {
+      "id": 8,
+      "type": "MiniMaxH3TurboLoRA",
+      "pos": [420, 620],
+      "size": [320, 120],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 1}
+      ],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "links": [6, 9], "slot_index": 0}
+      ],
+      "properties": {"Node name for S&R": "MiniMaxH3TurboLoRA"},
+      "widgets_values": ["minimax_h3_turbo_v4_step600_ema.safetensors", 1.0, false]
+    },
+    {
+      "id": 9,
+      "type": "VHS_VideoCombine",
+      "pos": [1200, 100],
+      "size": [350, 400],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {"name": "images", "type": "IMAGE", "link": 10},
+        {"name": "audio", "type": "AUDIO", "link": 11}
+      ],
+      "outputs": [],
+      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "widgets_values": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "MiniMax_H3_LongVideo_v2.0.0",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "pingpong": false,
+        "save_output": true
+      }
+    },
+    {
+      "id": 10,
+      "type": "MiniMaxH3LongVideoDirector",
+      "pos": [780, 50],
+      "size": [400, 800],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 9},
+        {"name": "clip", "type": "CLIP", "link": 2},
+        {"name": "vae", "type": "VAE", "link": 3},
+        {"name": "audio_vae", "type": "VAE", "link": 4},
+        {"name": "sampler", "type": "SAMPLER", "link": 5},
+        {"name": "sigmas", "type": "SIGMAS", "link": 7},
+        {"name": "reference_image", "type": "IMAGE", "link": 8}
+      ],
+      "outputs": [
+        {"name": "images", "type": "IMAGE", "links": [10], "slot_index": 0},
+        {"name": "audio", "type": "AUDIO", "links": [11], "slot_index": 1},
+        {"name": "fps", "type": "FLOAT", "links": null},
+        {"name": "shot_count", "type": "INT", "links": null},
+        {"name": "shots_info", "type": "STRING", "links": null}
+      ],
+      "properties": {"Node name for S&R": "MiniMaxH3LongVideoDirector"},
+      "widgets_values": [
+        "青春活力少女写真风格。纯乐器背景音乐：轻快钢琴与弦乐，中等节奏，青春治愈。无人声，无歌唱，无歌词。柔光侧光，暖肤色，活力自然。镜头稳定，无抖动。",
+        "{\"shots\":[{\"id\":\"shot_default\",\"prompt\":\"主体定义：\\n<主体 1> 是参考图中的年轻女性。\\n\\n概述：\\n[参考生成] 目标视频是<主体 1>的青春活力少女写真，纯乐器背景音乐。\\n\\n保留分析：\\n<主体 1>（出现在[镜头 1]）：完全保留。\\n\\n详细描述：\\n[镜头 1] 面部极端大特写，取景至锁骨。镜头固定稳定，自然呼吸。她眨眼微笑，眼神明亮，手指轻触脸颊。柔光侧光，青春活力感。无全身，无中远景。\\n\\n整体音景：\\n安静的室内环境音。\\n\\n非剧情音乐：\\n轻快钢琴与弦乐纯乐器配乐，中等节奏，纯乐器，无人声，无歌唱。\",\"duration\":3,\"seed\":560001,\"enabled\":true}]}",
+        "None",
+        1.0,
+        "5",
+        24,
+        42,
+        "randomize",
+        "➕ 添加分镜头",
+        "➖ 删除最后一段",
+        "🔄 重置为1段",
+        "📋 加载五段模板"
+      ]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 8, 0, "MODEL"],
+    [2, 2, 0, 10, 1, "CLIP"],
+    [3, 3, 0, 10, 2, "VAE"],
+    [4, 4, 0, 10, 3, "VAE"],
+    [5, 5, 0, 10, 4, "SAMPLER"],
+    [6, 8, 0, 6, 0, "MODEL"],
+    [7, 6, 0, 10, 5, "SIGMAS"],
+    [8, 7, 0, 10, 6, "IMAGE"],
+    [9, 8, 0, 10, 0, "MODEL"],
+    [10, 10, 0, 9, 0, "IMAGE"],
+    [11, 10, 1, 9, 1, "AUDIO"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

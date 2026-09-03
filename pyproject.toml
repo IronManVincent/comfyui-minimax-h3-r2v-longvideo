@@ -1,0 +1,14 @@
+[project]
+name = "comfyui-minimax-h3-longvideo"
+description = "MiniMax-H3 长视频导演台 - 动态分镜头增删，参考生视频长视频工作流"
+version = "2.0.0"
+license = { file = "LICENSE" }
+
+[project.urls]
+Repository = "https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo"
+
+[tool.comfy]
+PublisherId = "IronManVincent"
+DisplayName = "MiniMax-H3 LongVideo Director"
+Icon = ""
+web = "web"
