@@ -83,11 +83,11 @@ git clone https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo.git
 ### 输出视频（2段×3秒 = 6秒，0.3MP，9:16竖屏，v2.0.0 5步采样，bypass模式）
 
 <p align="center">
-  <a href="https://github.com/IronManVincent/comfyui-minimax-h3-r2v-longvideo/releases/download/v2.0.0/MiniMax_H3_LongVideo_v2.0.0_demo.mp4" target="_blank">
+  <a href="https://ironmanvincent.github.io/comfyui-minimax-h3-r2v-longvideo/assets/examples/demo_output.mp4" target="_blank">
     <img src="assets/examples/reference_input.png" alt="点击播放演示视频" width="300" style="border-radius: 8px; border: 2px solid #e1e4e8;">
   </a>
   <br>
-  <i>👆 点击图片播放演示视频（6秒，纯乐器配乐，2段分镜头，5步采样）</i>
+  <i>👆 点击图片在线播放演示视频（6秒，纯乐器配乐，2段分镜头，5步采样）</i>
 </p>
 
 **测试参数**：
