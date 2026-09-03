@@ -1,214 +1,884 @@
 {
+  "id": "2a54ca41-fe9c-446b-8b68-1e9fc32b038b",
+  "revision": 0,
   "last_node_id": 10,
-  "last_link_id": 15,
+  "last_link_id": 21,
   "nodes": [
     {
       "id": 1,
       "type": "UNETLoader",
-      "pos": [50, 50],
-      "size": [320, 100],
+      "pos": [
+        40,
+        40
+      ],
+      "size": [
+        320,
+        100
+      ],
       "flags": {},
       "order": 0,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "MODEL", "type": "MODEL", "links": [1], "slot_index": 0}
+      "inputs": [
+        {
+          "localized_name": "UNet名称",
+          "name": "unet_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "unet_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "数据类型",
+          "name": "weight_dtype",
+          "type": "COMBO",
+          "widget": {
+            "name": "weight_dtype"
+          },
+          "link": null
+        }
       ],
-      "properties": {"Node name for S&R": "UNETLoader"},
-      "widgets_values": ["minimax_h3_ref2va_pruned_int8_convrot.safetensors", "default"]
+      "outputs": [
+        {
+          "localized_name": "模型",
+          "name": "MODEL",
+          "type": "MODEL",
+          "slot_index": 0,
+          "links": [
+            15
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+        "default"
+      ],
+      "widgets_values_named": {
+        "unet_name": "minimax_h3_ref2va_pruned_int8_convrot.safetensors",
+        "weight_dtype": "default"
+      }
     },
     {
       "id": 2,
       "type": "CLIPLoader",
-      "pos": [50, 180],
-      "size": [320, 80],
+      "pos": [
+        40,
+        160
+      ],
+      "size": [
+        320,
+        106
+      ],
       "flags": {},
       "order": 1,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "CLIP", "type": "CLIP", "links": [2], "slot_index": 0}
+      "inputs": [
+        {
+          "localized_name": "CLIP名称",
+          "name": "clip_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "clip_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "类型",
+          "name": "type",
+          "type": "COMBO",
+          "widget": {
+            "name": "type"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "设备",
+          "name": "device",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "device"
+          },
+          "link": null
+        }
       ],
-      "properties": {"Node name for S&R": "CLIPLoader"},
-      "widgets_values": ["qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors", "minimax", "default"]
+      "outputs": [
+        {
+          "localized_name": "CLIP",
+          "name": "CLIP",
+          "type": "CLIP",
+          "slot_index": 0,
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+        "minimax",
+        "default"
+      ],
+      "widgets_values_named": {
+        "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+        "type": "minimax",
+        "device": "default"
+      }
     },
     {
       "id": 3,
       "type": "VAELoader",
-      "pos": [50, 290],
-      "size": [320, 60],
+      "pos": [
+        40,
+        280
+      ],
+      "size": [
+        320,
+        60
+      ],
       "flags": {},
       "order": 2,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "VAE", "type": "VAE", "links": [3], "slot_index": 0}
+      "inputs": [
+        {
+          "localized_name": "vae名称",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
       ],
-      "properties": {"Node name for S&R": "VAELoader"},
-      "widgets_values": ["minimax_h3_video_vae_fp16.safetensors"]
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "minimax_h3_video_vae_fp16.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "minimax_h3_video_vae_fp16.safetensors"
+      }
     },
     {
       "id": 4,
       "type": "VAELoader",
-      "pos": [50, 380],
-      "size": [320, 60],
+      "pos": [
+        40,
+        360
+      ],
+      "size": [
+        320,
+        60
+      ],
       "flags": {},
       "order": 3,
       "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "VAE", "type": "VAE", "links": [4], "slot_index": 0}
+      "inputs": [
+        {
+          "localized_name": "vae名称",
+          "name": "vae_name",
+          "type": "COMBO",
+          "widget": {
+            "name": "vae_name"
+          },
+          "link": null
+        }
       ],
-      "properties": {"Node name for S&R": "VAELoader"},
-      "widgets_values": ["minimax_h3_audio_vae_fp32.safetensors"]
+      "outputs": [
+        {
+          "localized_name": "VAE",
+          "name": "VAE",
+          "type": "VAE",
+          "slot_index": 0,
+          "links": [
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "minimax_h3_audio_vae_fp32.safetensors"
+      ],
+      "widgets_values_named": {
+        "vae_name": "minimax_h3_audio_vae_fp32.safetensors"
+      }
     },
     {
       "id": 5,
       "type": "MiniMaxH3TurboSampler",
-      "pos": [420, 50],
-      "size": [200, 60],
+      "pos": [
+        400,
+        40
+      ],
+      "size": [
+        300,
+        60
+      ],
       "flags": {},
       "order": 4,
       "mode": 0,
       "inputs": [],
       "outputs": [
-        {"name": "SAMPLER", "type": "SAMPLER", "links": [5], "slot_index": 0}
+        {
+          "localized_name": "采样器",
+          "name": "SAMPLER",
+          "type": "SAMPLER",
+          "slot_index": 0,
+          "links": [
+            19
+          ]
+        }
       ],
-      "properties": {"Node name for S&R": "MiniMaxH3TurboSampler"},
-      "widgets_values": []
+      "properties": {
+        "cnr_id": "comfyui-minimax-h3-turbo",
+        "ver": "4274783a23afcfdbea3b4876cb79effd6c510785",
+        "Node name for S&R": "MiniMaxH3TurboSampler"
+      }
     },
     {
       "id": 6,
       "type": "BasicScheduler",
-      "pos": [420, 140],
-      "size": [200, 100],
+      "pos": [
+        400,
+        120
+      ],
+      "size": [
+        300,
+        106
+      ],
       "flags": {},
-      "order": 5,
+      "order": 8,
       "mode": 0,
       "inputs": [
-        {"name": "model", "type": "MODEL", "link": 6}
+        {
+          "localized_name": "模型",
+          "name": "model",
+          "type": "MODEL",
+          "link": 6
+        },
+        {
+          "localized_name": "调度器",
+          "name": "scheduler",
+          "type": "COMBO",
+          "widget": {
+            "name": "scheduler"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "步数",
+          "name": "steps",
+          "type": "INT",
+          "widget": {
+            "name": "steps"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "降噪",
+          "name": "denoise",
+          "type": "FLOAT",
+          "widget": {
+            "name": "denoise"
+          },
+          "link": null
+        }
       ],
       "outputs": [
-        {"name": "SIGMAS", "type": "SIGMAS", "links": [7], "slot_index": 0}
+        {
+          "localized_name": "Sigmas",
+          "name": "SIGMAS",
+          "type": "SIGMAS",
+          "slot_index": 0,
+          "links": [
+            20
+          ]
+        }
       ],
-      "properties": {"Node name for S&R": "BasicScheduler"},
-      "widgets_values": ["simple", 5, 1.0]
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "BasicScheduler"
+      },
+      "widgets_values": [
+        "simple",
+        4,
+        1
+      ],
+      "widgets_values_named": {
+        "scheduler": "simple",
+        "steps": 4,
+        "denoise": 1
+      }
     },
     {
       "id": 7,
       "type": "LoadImage",
-      "pos": [420, 270],
-      "size": [320, 320],
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [],
-      "outputs": [
-        {"name": "IMAGE", "type": "IMAGE", "links": [8], "slot_index": 0},
-        {"name": "MASK", "type": "MASK", "links": null}
+      "pos": [
+        400,
+        250
       ],
-      "properties": {"Node name for S&R": "LoadImage"},
-      "widgets_values": ["example.png", "image"]
-    },
-    {
-      "id": 8,
-      "type": "MiniMaxH3TurboLoRA",
-      "pos": [420, 620],
-      "size": [320, 120],
+      "size": [
+        320,
+        320
+      ],
       "flags": {},
-      "order": 7,
+      "order": 5,
       "mode": 0,
       "inputs": [
-        {"name": "model", "type": "MODEL", "link": 1}
+        {
+          "localized_name": "图像",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "选择文件上传",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
       ],
       "outputs": [
-        {"name": "MODEL", "type": "MODEL", "links": [6, 9], "slot_index": 0}
+        {
+          "localized_name": "图像",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "slot_index": 0,
+          "links": [
+            21
+          ]
+        },
+        {
+          "localized_name": "遮罩",
+          "name": "MASK",
+          "type": "MASK",
+          "links": null
+        }
       ],
-      "properties": {"Node name for S&R": "MiniMaxH3TurboLoRA"},
-      "widgets_values": ["minimax_h3_turbo_v4_step600_ema.safetensors", 1.0, false]
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.34.3",
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "campus_girl_final_00001_.png",
+        "image"
+      ],
+      "widgets_values_named": {
+        "image": "campus_girl_final_00001_.png",
+        "upload": "image"
+      }
     },
     {
       "id": 9,
       "type": "VHS_VideoCombine",
-      "pos": [1200, 100],
-      "size": [350, 400],
+      "pos": [
+        1320,
+        40
+      ],
+      "size": [
+        350,
+        354
+      ],
       "flags": {},
-      "order": 9,
+      "order": 6,
       "mode": 0,
       "inputs": [
-        {"name": "images", "type": "IMAGE", "link": 10},
-        {"name": "audio", "type": "AUDIO", "link": 11}
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 12
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "shape": 7,
+          "type": "AUDIO",
+          "link": 13
+        },
+        {
+          "localized_name": "meta_batch",
+          "name": "meta_batch",
+          "shape": 7,
+          "type": "VHS_BatchManager",
+          "link": null
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "shape": 7,
+          "type": "VAE",
+          "link": null
+        },
+        {
+          "localized_name": "frame_rate",
+          "name": "frame_rate",
+          "type": "FLOAT",
+          "widget": {
+            "name": "frame_rate"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "loop_count",
+          "name": "loop_count",
+          "type": "INT",
+          "widget": {
+            "name": "loop_count"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "format",
+          "name": "format",
+          "type": "COMBO",
+          "widget": {
+            "name": "format"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "pingpong",
+          "name": "pingpong",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "pingpong"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "save_output",
+          "name": "save_output",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_output"
+          },
+          "link": null
+        },
+        {
+          "name": "fps",
+          "type": "FLOAT",
+          "link": 14
+        },
+        {
+          "name": "pix_fmt",
+          "type": [
+            "yuv420p",
+            "yuv420p10le"
+          ],
+          "widget": {
+            "name": "pix_fmt"
+          },
+          "link": null
+        },
+        {
+          "name": "crf",
+          "type": "INT",
+          "widget": {
+            "name": "crf"
+          },
+          "link": null
+        },
+        {
+          "name": "save_metadata",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "save_metadata"
+          },
+          "link": null
+        },
+        {
+          "name": "trim_to_audio",
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "trim_to_audio"
+          },
+          "link": null
+        }
       ],
-      "outputs": [],
-      "properties": {"Node name for S&R": "VHS_VideoCombine"},
+      "outputs": [
+        {
+          "localized_name": "Filenames",
+          "name": "Filenames",
+          "type": "VHS_FILENAMES",
+          "links": null
+        }
+      ],
+      "properties": {
+        "cnr_id": "comfyui-videohelpersuite",
+        "ver": "4d907bee61e92c2e65af3bd6383a4e4d356126d1",
+        "Node name for S&R": "VHS_VideoCombine"
+      },
       "widgets_values": {
         "frame_rate": 24,
         "loop_count": 0,
-        "filename_prefix": "MiniMax_H3_LongVideo_v2.0.0",
+        "filename_prefix": "MiniMax_H3_LongVideo",
         "format": "video/h264-mp4",
         "pix_fmt": "yuv420p",
         "crf": 19,
         "save_metadata": true,
+        "trim_to_audio": false,
         "pingpong": false,
-        "save_output": true
+        "save_output": true,
+        "videopreview": ""
+      },
+      "widgets_values_named": {
+        "frame_rate": 24,
+        "loop_count": 0,
+        "filename_prefix": "MiniMax_H3_LongVideo",
+        "format": "video/h264-mp4",
+        "pix_fmt": "yuv420p",
+        "crf": 19,
+        "save_metadata": true,
+        "trim_to_audio": false,
+        "pingpong": false,
+        "save_output": true,
+        "videopreview": ""
       }
     },
     {
       "id": 10,
       "type": "MiniMaxH3LongVideoDirector",
-      "pos": [780, 50],
-      "size": [400, 800],
+      "pos": [
+        780,
+        40
+      ],
+      "size": [
+        480,
+        850
+      ],
       "flags": {},
-      "order": 8,
+      "order": 7,
       "mode": 0,
       "inputs": [
-        {"name": "model", "type": "MODEL", "link": 9},
-        {"name": "clip", "type": "CLIP", "link": 2},
-        {"name": "vae", "type": "VAE", "link": 3},
-        {"name": "audio_vae", "type": "VAE", "link": 4},
-        {"name": "sampler", "type": "SAMPLER", "link": 5},
-        {"name": "sigmas", "type": "SIGMAS", "link": 7},
-        {"name": "reference_image", "type": "IMAGE", "link": 8}
+        {
+          "localized_name": "model",
+          "name": "model",
+          "type": "MODEL",
+          "link": 15
+        },
+        {
+          "localized_name": "clip",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 16
+        },
+        {
+          "localized_name": "vae",
+          "name": "vae",
+          "type": "VAE",
+          "link": 17
+        },
+        {
+          "localized_name": "audio_vae",
+          "name": "audio_vae",
+          "type": "VAE",
+          "link": 18
+        },
+        {
+          "localized_name": "sampler",
+          "name": "sampler",
+          "type": "SAMPLER",
+          "link": 19
+        },
+        {
+          "localized_name": "sigmas",
+          "name": "sigmas",
+          "type": "SIGMAS",
+          "link": 20
+        },
+        {
+          "localized_name": "reference_image",
+          "name": "reference_image",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "localized_name": "global_prompt",
+          "name": "global_prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "global_prompt"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "shots_data",
+          "name": "shots_data",
+          "type": "STRING",
+          "widget": {
+            "name": "shots_data"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lora_name",
+          "name": "lora_name",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "lora_name"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "lora_strength",
+          "name": "lora_strength",
+          "shape": 7,
+          "type": "FLOAT",
+          "widget": {
+            "name": "lora_strength"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "context_length",
+          "name": "context_length",
+          "shape": 7,
+          "type": "COMBO",
+          "widget": {
+            "name": "context_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "audio_context_length",
+          "name": "audio_context_length",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "audio_context_length"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "seed",
+          "name": "seed",
+          "shape": 7,
+          "type": "INT",
+          "widget": {
+            "name": "seed"
+          },
+          "link": null
+        }
       ],
       "outputs": [
-        {"name": "images", "type": "IMAGE", "links": [10], "slot_index": 0},
-        {"name": "audio", "type": "AUDIO", "links": [11], "slot_index": 1},
-        {"name": "fps", "type": "FLOAT", "links": null},
-        {"name": "shot_count", "type": "INT", "links": null},
-        {"name": "shots_info", "type": "STRING", "links": null}
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": [
+            12
+          ]
+        },
+        {
+          "localized_name": "audio",
+          "name": "audio",
+          "type": "AUDIO",
+          "links": [
+            13
+          ]
+        },
+        {
+          "localized_name": "fps",
+          "name": "fps",
+          "type": "FLOAT",
+          "links": [
+            14
+          ]
+        },
+        {
+          "localized_name": "shot_count",
+          "name": "shot_count",
+          "type": "INT",
+          "links": null
+        },
+        {
+          "localized_name": "shots_info",
+          "name": "shots_info",
+          "type": "STRING",
+          "links": null
+        }
       ],
-      "properties": {"Node name for S&R": "MiniMaxH3LongVideoDirector"},
+      "properties": {
+        "Node name for S&R": "MiniMaxH3LongVideoDirector"
+      },
       "widgets_values": [
-        "青春活力少女写真风格。纯乐器背景音乐：轻快钢琴与弦乐，中等节奏，青春治愈。无人声，无歌唱，无歌词。柔光侧光，暖肤色，活力自然。镜头稳定，无抖动。",
-        "{\"shots\":[{\"id\":\"shot_default\",\"prompt\":\"主体定义：\\n<主体 1> 是参考图中的年轻女性。\\n\\n概述：\\n[参考生成] 目标视频是<主体 1>的青春活力少女写真，纯乐器背景音乐。\\n\\n保留分析：\\n<主体 1>（出现在[镜头 1]）：完全保留。\\n\\n详细描述：\\n[镜头 1] 面部极端大特写，取景至锁骨。镜头固定稳定，自然呼吸。她眨眼微笑，眼神明亮，手指轻触脸颊。柔光侧光，青春活力感。无全身，无中远景。\\n\\n整体音景：\\n安静的室内环境音。\\n\\n非剧情音乐：\\n轻快钢琴与弦乐纯乐器配乐，中等节奏，纯乐器，无人声，无歌唱。\",\"duration\":3,\"seed\":560001,\"enabled\":true}]}",
-        "None",
-        1.0,
+        "subject_definitions:\n<Subject 1>是参考图中的青春少女，双马尾发型，白色蝴蝶结发饰，白色无袖针织上衣，深色百褶短裙，白色过膝袜，黑色颈链。\n<Picture 1>是参考图，用于保持人物外貌、发型和服饰的一致性。\n\nsummary:\n[reference generation] 目标视频是5段分镜头的少女写真，按头部特写→肩颈胸特写→腰臀特写→腿部特写→上半身ending pose的顺序推进，每段3秒，分镜头之间硬切衔接。\n\nretention_analysis:\n<Subject 1> (所有镜头): fully_preserved - 人物外貌、发型、服饰、肤色全程保持一致。\n<Picture 1> (所有镜头): fully_preserved - 作为人物身份和服饰的参考。\n\noverall_soundscape:\n安静室内环境音，无明显环境噪声，人物动作轻微自然。\n\nnon_diegetic_music:\n纯乐器配乐，以钢琴为主旋律，弦乐铺垫和声，木吉他点缀，节奏舒缓明快，青春治愈风格，BPM约90，无人声，无歌唱，无歌词，无伪语言吟唱。",
+        "{\n  \"shots\": [\n    {\n      \"id\": \"shot_1\",\n      \"prompt\": \"极端大特写，仅显示人物面部，取景范围从额头至下巴，绝对不显示颈部以下。画面绝对稳定，镜头完全固定，无任何抖动，无运动模糊。人物面带微笑，轻轻眨眼，眼神明亮有光，嘴角微微上扬，发丝静止。柔光从左侧45度照射，面部光影柔和，背景虚化深色。禁止全身，禁止中远景，禁止颈部，禁止肩膀，禁止胸部，禁止腰部，禁止腿部。\",\n      \"duration\": 3,\n      \"seed\": 12345,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_2\",\n      \"prompt\": \"近景特写，显示人物肩颈和胸部上方，取景范围从下巴至胸部上方，绝对不显示腰部及以下，仅显示下巴和嘴唇不显示完整面部。画面绝对稳定，镜头完全固定，无任何抖动。肩颈线条清晰优美，锁骨轮廓分明，自然站立姿态，头部微微侧倾。柔光从前方照射，勾勒肩颈轮廓，背景虚化深色。禁止全身，禁止中远景，禁止面部完整显示，禁止腰部，禁止臀部，禁止腿部。\",\n      \"duration\": 3,\n      \"seed\": 23456,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_3\",\n      \"prompt\": \"特写，显示人物腰臀部，取景范围从腰部至大腿根部，绝对不显示面部和上半身（胸部以上）。画面绝对稳定，镜头完全固定，无任何抖动。腰部曲线优美，百褶裙裙摆自然垂落，姿态自然站立，重心微移。柔光从侧后方照射，勾勒腰臀曲线，背景深色虚化。禁止显示面部，禁止显示上半身，禁止全身，禁止中远景，禁止头部，禁止肩膀。\",\n      \"duration\": 3,\n      \"seed\": 34567,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_4\",\n      \"prompt\": \"特写，显示人物腿部，取景范围从大腿中部至脚踝，绝对不显示面部和上半身，不显示腰部。画面绝对稳定，镜头完全固定，无任何抖动。腿部线条修长优美，白色过膝袜纹理清晰，自然站立姿态，双脚微分。柔光从前方照射，腿部光影柔和，背景深色虚化。禁止显示面部，禁止显示上半身，禁止全身，禁止中远景，禁止头部，禁止腰部，禁止臀部。\",\n      \"duration\": 3,\n      \"seed\": 45678,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_5\",\n      \"prompt\": \"近景，显示人物上半身，取景范围从头部至腰部，ending pose。画面绝对稳定，镜头完全固定，无任何抖动。人物姿态生动有张力，双手自然轻撩发丝，表情自信微笑，眼神明亮。柔光从前方照射，人物轮廓清晰，背景虚化深色。禁止全身，禁止中远景，禁止拉远镜头，禁止腿部完整显示。\",\n      \"duration\": 3,\n      \"seed\": 56789,\n      \"enabled\": true\n    }\n  ]\n}",
+        "minimax_h3_turbo_v4_step600_ema.safetensors",
+        1,
         "5",
         24,
         42,
         "randomize",
-        "➕ 添加分镜头",
-        "➖ 删除最后一段",
-        "🔄 重置为1段",
-        "📋 加载五段模板"
-      ]
+        null,
+        null,
+        null,
+        null,
+        ""
+      ],
+      "widgets_values_named": {
+        "通用提示词（应用于所有分镜头）": "subject_definitions:\n<Subject 1>是参考图中的青春少女，双马尾发型，白色蝴蝶结发饰，白色无袖针织上衣，深色百褶短裙，白色过膝袜，黑色颈链。\n<Picture 1>是参考图，用于保持人物外貌、发型和服饰的一致性。\n\nsummary:\n[reference generation] 目标视频是5段分镜头的少女写真，按头部特写→肩颈胸特写→腰臀特写→腿部特写→上半身ending pose的顺序推进，每段3秒，分镜头之间硬切衔接。\n\nretention_analysis:\n<Subject 1> (所有镜头): fully_preserved - 人物外貌、发型、服饰、肤色全程保持一致。\n<Picture 1> (所有镜头): fully_preserved - 作为人物身份和服饰的参考。\n\noverall_soundscape:\n安静室内环境音，无明显环境噪声，人物动作轻微自然。\n\nnon_diegetic_music:\n纯乐器配乐，以钢琴为主旋律，弦乐铺垫和声，木吉他点缀，节奏舒缓明快，青春治愈风格，BPM约90，无人声，无歌唱，无歌词，无伪语言吟唱。",
+        "shots_data": "{\n  \"shots\": [\n    {\n      \"id\": \"shot_1\",\n      \"prompt\": \"极端大特写，仅显示人物面部，取景范围从额头至下巴，绝对不显示颈部以下。画面绝对稳定，镜头完全固定，无任何抖动，无运动模糊。人物面带微笑，轻轻眨眼，眼神明亮有光，嘴角微微上扬，发丝静止。柔光从左侧45度照射，面部光影柔和，背景虚化深色。禁止全身，禁止中远景，禁止颈部，禁止肩膀，禁止胸部，禁止腰部，禁止腿部。\",\n      \"duration\": 3,\n      \"seed\": 12345,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_2\",\n      \"prompt\": \"近景特写，显示人物肩颈和胸部上方，取景范围从下巴至胸部上方，绝对不显示腰部及以下，仅显示下巴和嘴唇不显示完整面部。画面绝对稳定，镜头完全固定，无任何抖动。肩颈线条清晰优美，锁骨轮廓分明，自然站立姿态，头部微微侧倾。柔光从前方照射，勾勒肩颈轮廓，背景虚化深色。禁止全身，禁止中远景，禁止面部完整显示，禁止腰部，禁止臀部，禁止腿部。\",\n      \"duration\": 3,\n      \"seed\": 23456,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_3\",\n      \"prompt\": \"特写，显示人物腰臀部，取景范围从腰部至大腿根部，绝对不显示面部和上半身（胸部以上）。画面绝对稳定，镜头完全固定，无任何抖动。腰部曲线优美，百褶裙裙摆自然垂落，姿态自然站立，重心微移。柔光从侧后方照射，勾勒腰臀曲线，背景深色虚化。禁止显示面部，禁止显示上半身，禁止全身，禁止中远景，禁止头部，禁止肩膀。\",\n      \"duration\": 3,\n      \"seed\": 34567,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_4\",\n      \"prompt\": \"特写，显示人物腿部，取景范围从大腿中部至脚踝，绝对不显示面部和上半身，不显示腰部。画面绝对稳定，镜头完全固定，无任何抖动。腿部线条修长优美，白色过膝袜纹理清晰，自然站立姿态，双脚微分。柔光从前方照射，腿部光影柔和，背景深色虚化。禁止显示面部，禁止显示上半身，禁止全身，禁止中远景，禁止头部，禁止腰部，禁止臀部。\",\n      \"duration\": 3,\n      \"seed\": 45678,\n      \"enabled\": true\n    },\n    {\n      \"id\": \"shot_5\",\n      \"prompt\": \"近景，显示人物上半身，取景范围从头部至腰部，ending pose。画面绝对稳定，镜头完全固定，无任何抖动。人物姿态生动有张力，双手自然轻撩发丝，表情自信微笑，眼神明亮。柔光从前方照射，人物轮廓清晰，背景虚化深色。禁止全身，禁止中远景，禁止拉远镜头，禁止腿部完整显示。\",\n      \"duration\": 3,\n      \"seed\": 56789,\n      \"enabled\": true\n    }\n  ]\n}",
+        "lora_name": "minimax_h3_turbo_v4_step600_ema.safetensors",
+        "lora_strength": 1,
+        "context_length": "5",
+        "audio_context_length": 24,
+        "seed": 42,
+        "control_after_generate": "randomize",
+        "➕ 添加分镜头": null,
+        "➖ 删除最后一段": null,
+        "🔄 重置为1段": null,
+        "📋 加载五段模板": null,
+        "shot_editor": ""
+      }
     }
   ],
   "links": [
-    [1, 1, 0, 8, 0, "MODEL"],
-    [2, 2, 0, 10, 1, "CLIP"],
-    [3, 3, 0, 10, 2, "VAE"],
-    [4, 4, 0, 10, 3, "VAE"],
-    [5, 5, 0, 10, 4, "SAMPLER"],
-    [6, 8, 0, 6, 0, "MODEL"],
-    [7, 6, 0, 10, 5, "SIGMAS"],
-    [8, 7, 0, 10, 6, "IMAGE"],
-    [9, 8, 0, 10, 0, "MODEL"],
-    [10, 10, 0, 9, 0, "IMAGE"],
-    [11, 10, 1, 9, 1, "AUDIO"]
+    [
+      6,
+      1,
+      0,
+      6,
+      0,
+      "MODEL"
+    ],
+    [
+      12,
+      10,
+      0,
+      9,
+      0,
+      "IMAGE"
+    ],
+    [
+      13,
+      10,
+      1,
+      9,
+      1,
+      "AUDIO"
+    ],
+    [
+      14,
+      10,
+      2,
+      9,
+      10,
+      "FLOAT"
+    ],
+    [
+      15,
+      1,
+      0,
+      10,
+      0,
+      "MODEL"
+    ],
+    [
+      16,
+      2,
+      0,
+      10,
+      1,
+      "CLIP"
+    ],
+    [
+      17,
+      3,
+      0,
+      10,
+      2,
+      "VAE"
+    ],
+    [
+      18,
+      4,
+      0,
+      10,
+      3,
+      "VAE"
+    ],
+    [
+      19,
+      5,
+      0,
+      10,
+      4,
+      "SAMPLER"
+    ],
+    [
+      20,
+      6,
+      0,
+      10,
+      5,
+      "SIGMAS"
+    ],
+    [
+      21,
+      7,
+      0,
+      10,
+      6,
+      "IMAGE"
+    ]
   ],
   "groups": [],
   "config": {},
-  "extra": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9444078947368421,
+      "offset": [
+        149.80146290491132,
+        -2.223963775687878
+      ]
+    }
+  },
   "version": 0.4
 }
