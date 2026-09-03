@@ -85,6 +85,8 @@
   <img src="assets/examples/reference_input.png" alt="输入参考图" width="300">
 </p>
 
+> 📋 参考图详细生成参数、模型配置、完整提示词与负向提示词见 [docs/examples.md](docs/examples.md)
+
 ### 输出视频（2段×3秒 = 6秒，0.3MP，9:16竖屏，v2.0.0 5步采样，bypass模式）
 
 <p align="center">
@@ -107,6 +109,8 @@
 | Larry LoRA | v4 step600，bypass模式 |
 | 耗时 | ~13分钟（RTX 5060 8GB） |
 | 音频 | 纯乐器配乐（无人声） |
+
+> 📋 输出视频完整工作流配置、六段式通用提示词、五段分镜头完整提示词、测试环境详细配置见 [docs/examples.md](docs/examples.md)
 
 ---
 

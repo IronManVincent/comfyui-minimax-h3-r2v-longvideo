@@ -6,6 +6,10 @@
 
 ## 一、输入参考图
 
+<p align="center">
+  <img src="../assets/examples/reference_input.png" alt="输入参考图" width="300">
+</p>
+
 ### 基本信息
 
 | 项目 | 内容 |
@@ -58,6 +62,14 @@ chromatic aberration, oversaturated, unnatural skin, plastic skin
 ---
 
 ## 二、输出视频
+
+<p align="center">
+  <a href="https://ironmanvincent.github.io/comfyui-minimax-h3-r2v-longvideo/assets/examples/demo_output.mp4" target="_blank">
+    <img src="../assets/examples/reference_input.png" alt="点击播放演示视频" width="300" style="border-radius: 8px; border: 2px solid #e1e4e8;">
+  </a>
+  <br>
+  <i>👆 点击图片在线播放演示视频（15秒，纯乐器配乐，5段分镜头，5步采样）</i>
+</p>
 
 ### 基本信息
 
